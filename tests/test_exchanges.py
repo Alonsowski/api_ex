@@ -77,6 +77,12 @@ def test_add_fees():
         "qty": 20
     }
     charges = {
-        "result": 50,
-        "fee": 0.1
+        "result": 49,
+        "fee": 1
     }
+    api_obj._add_fee(quote, charges["fee"])
+    api_obj._add_fee(quote, charges["fee"])
+    api_obj._add_fee(quote, charges["fee"])
+    assert api_obj.fees_charged
+    assert api_obj.fees_charged[0].value == 1
+    assert sum(f.value for f in api_obj.fees_charged) == 3

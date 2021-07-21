@@ -44,15 +44,15 @@ class XchApi:
         self.currencies.append(currency)
 
     def process_request(self,  json_str : json) -> json:
-        quote = self.parse_json_to_quote(json_str)
+        quote = self._parse_json_to_quote(json_str)
         charges = self._calculate_exchange_operation(quote)
         self._update_currencies(quote, charges["result"])
         self._add_fee(quote, charges["fee"])
         quote.update({
-            "total": sum(charges),
+            "total": sum(charges.values()),
             "fee": charges["fee"]
         })
-        return json.dump(quote)
+        return json.dumps(quote)
 
     def _parse_json_to_quote(self, json_str : json):
         return json.loads(json_str)        
